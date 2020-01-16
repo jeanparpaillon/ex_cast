@@ -7,7 +7,7 @@ enum buddy {
 };
 
 enum {
-    one = 0,
+    one = 1,
     two,
     three
 };

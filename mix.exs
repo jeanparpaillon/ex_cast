@@ -6,6 +6,7 @@ defmodule ExCast.MixProject do
       app: :cast,
       version: "0.1.0",
       elixir: "~> 1.9",
+      elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(Mix.env()),
       deps: deps()
@@ -35,6 +36,10 @@ defmodule ExCast.MixProject do
   end
 
   defp aliases(_), do: []
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+
+  defp elixirc_paths(_), do: ["lib"]
 
   defp prereqs(_) do
     [
