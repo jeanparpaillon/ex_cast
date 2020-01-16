@@ -14,6 +14,7 @@ defmodule Cast do
 
     quote do
       import Cast.DSL, only: [enum: 2, const: 1, const: 2]
+      import Cast.Caster
       Module.put_attribute(__MODULE__, :ast, unquote(ast_src))
       Module.register_attribute(__MODULE__, :enums, accumulate: true)
       Module.register_attribute(__MODULE__, :consts, accumulate: true)

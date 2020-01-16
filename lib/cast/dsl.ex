@@ -35,7 +35,10 @@ defmodule Cast.DSL do
   * `name`: name of the constant in the AST
   * `opts`: keyword list
     * `name: valid function name`: if constant name is not a valid function
-      name, this option gives the name of the function to generate
+      name, this option gives the name of the function to generate (default:
+      constant name as in AST)
+    * `cast`: a function to cast (charlist) value into desired one (default: `&
+      &1`)
 
   Generates a function to access value.
   """

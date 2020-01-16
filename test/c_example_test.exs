@@ -24,4 +24,9 @@ defmodule CExampleTest do
     assert :planet = CExample.Buddies.key(1)
     assert :universe = CExample.Buddies.key(2)
   end
+
+  test "constants" do
+    assert 1 == CExample.version()
+    assert "C example" == CExample.app()
+  end
 end

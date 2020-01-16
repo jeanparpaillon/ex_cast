@@ -1,4 +1,5 @@
-#define VERSION 1
+const int version = 1;
+const char* app = "C example";
 
 enum buddy {
     world = 0,
