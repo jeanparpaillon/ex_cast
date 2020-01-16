@@ -11,16 +11,20 @@ defmodule Cast.DSL do
 
   Arguments
   * `name`: name of the generated module
-  * `contains`: one of the value of the enumeration to extract
+  * `opts`: keyword list, one of:
+    * `contains`: one of the value of the enumeration to extract (for anonymous
+      enumerations)
+    * `name`: name of the enumeration
 
   Generates a module with following functions:
   * `mapping/0`: returns a `%{atom => integer}` map
   * `key/1`: returns the atom key for a given integer. Raise if invalid value.
-  * `value/1`: returns the integer value for a given atom key. Raise if invalid key.
+  * `value/1`: returns the integer value for a given atom key. Raise if invalid
+    key.
   """
-  defmacro enum(name, contains) do
+  defmacro enum(name, opts) do
     quote do
-      @enums {unquote(name), unquote(contains)}
+      @enums {unquote(name), unquote(opts)}
     end
   end
 
@@ -86,12 +90,24 @@ defmodule Cast.DSL do
   defp def_enums(env, ast, enums),
     do: Enum.map(enums, &def_enum(env, ast, &1))
 
-  defp def_enum(env, ast, {name, contains}) do
+  defp def_enum(env, ast, {name, opts}) do
     module = Module.concat(env.module, name)
 
     enum =
-      ast
-      |> xpath(~x"/GCC_XML/Enumeration[EnumValue/@name='#{contains}']/EnumValue"l, name: ~x"@name", value: ~x"@init")
+      {Keyword.get(opts, :contains), Keyword.get(opts, :name)}
+      |> case do
+        {nil, nil} ->
+          raise "enum: one of :contains or :name option is required"
+
+        {contains, nil} ->
+          extract_anon_enum(ast, contains)
+
+        {nil, name} ->
+          extract_enum(ast, name)
+
+        _ ->
+          raise "enum: one of :contains or :name option is required"
+      end
       |> Enum.reduce(%{}, &Map.put(&2, List.to_atom(&1.name), List.to_integer(&1.value)))
 
     quote do
@@ -125,5 +141,21 @@ defmodule Cast.DSL do
         def key(unquote(value)), do: unquote(key)
       end
     end)
+  end
+
+  defp extract_anon_enum(ast, contains) do
+    ast
+    |> xpath(~x"/GCC_XML/Enumeration[EnumValue/@name='#{contains}']/EnumValue"l,
+      name: ~x"@name",
+      value: ~x"@init"
+    )
+  end
+
+  defp extract_enum(ast, name) do
+    ast
+    |> xpath(~x"/GCC_XML/Enumeration[@name='#{name}']/EnumValue"l,
+      name: ~x"@name",
+      value: ~x"@init"
+    )
   end
 end
