@@ -9,7 +9,9 @@ defmodule ExCast.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(Mix.env()),
-      deps: deps()
+      deps: deps(),
+      description: description(),
+      package: package()
     ]
   end
 
@@ -74,4 +76,15 @@ defmodule ExCast.MixProject do
     do:
       @examples
       |> Enum.each(&System.cmd("make", ["clean"], cd: Path.join("test/support", &1)))
+
+  defp description,
+    do: "C(++) AST to elixir"
+
+  defp package,
+    do: [
+      maintainers: ["Jean Parpaillon"],
+      licenses: ["Apache 2"],
+      links: %{"GitHub" => "https://github.com/jeanparpaillon/ex_cast"},
+      files: ~w(mix.exs README.md lib test .formatter.exs)
+    ]
 end
