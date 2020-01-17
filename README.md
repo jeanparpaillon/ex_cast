@@ -9,6 +9,10 @@ Cast (for C-AST) allows to build elixir code directly from C AST.
 
 Cast uses C AST built with [castxml](https://github.com/CastXML).
 
+## Usage
+
+See examples in `test/support`.
+
 ## Installation
 
 The package can be installed by adding `cast` to your list of dependencies in
