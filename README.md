@@ -11,7 +11,7 @@ Cast uses C AST built with [castxml](https://github.com/CastXML).
 
 ## Usage
 
-See examples in `test/support`.
+See `Cast` module documentation and examples in `test/support`.
 
 ## Installation
 

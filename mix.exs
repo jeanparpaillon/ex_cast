@@ -11,7 +11,8 @@ defmodule ExCast.MixProject do
       aliases: aliases(Mix.env()),
       deps: deps(),
       description: description(),
-      package: package()
+      package: package(),
+      docs: docs()
     ]
   end
 
@@ -25,7 +26,8 @@ defmodule ExCast.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:sweet_xml, "~> 0.6"}
+      {:sweet_xml, "~> 0.6"},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 
@@ -86,5 +88,11 @@ defmodule ExCast.MixProject do
       licenses: ["Apache 2"],
       links: %{"GitHub" => "https://github.com/jeanparpaillon/ex_cast"},
       files: ~w(mix.exs README.md lib test .formatter.exs)
+    ]
+
+    defp docs,
+    do: [
+    main: "Cast",
+    extras: ["README.md"]
     ]
 end
